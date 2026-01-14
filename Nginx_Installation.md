@@ -35,13 +35,15 @@ Jika belum:
 
 ### Langkah 2: Instal Nginx
 
+```bash
+brew install nginx
+```
+
 📦 File penting setelah instalasi:
 
-```console
-Konfigurasi utama: /opt/homebrew/etc/nginx/nginx.conf
-Folder root default: /opt/homebrew/var/www
-Log error: /opt/homebrew/var/log/nginx/error.log
-```
+- Konfigurasi utama: /opt/homebrew/etc/nginx/nginx.conf
+- Folder root default: /opt/homebrew/var/www
+- Log error: /opt/homebrew/var/log/nginx/error.log
 
 ### Langkah 3: Jalankan Nginx
 
@@ -51,7 +53,6 @@ Log error: /opt/homebrew/var/log/nginx/error.log
 brew services start nginx
 
 # Atau jalankan manual (akan berhenti saat terminal ditutup)
-
 nginx
 
 ```
