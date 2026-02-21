@@ -20,7 +20,7 @@ bum (Bun Version Manager) adalah alat baris perintah (command-line tool) komunit
 
 ```bash
 # 1. Install bum
-# via Script (Disarankan untuk performa CLI terbaik)
+# Via Script (Disarankan untuk performa CLI terbaik)
 curl -fsSL https://github.com/owenizedd/bum/raw/main/install.sh | bash
 
 # Alternatif: via npm/npx (Jika sudah ada Node.js)
@@ -38,8 +38,8 @@ source ~/.bash_profile
 # 3. Mengecek versi bum
 bum --version
 
-# 4. (Opsional) Install versi Bun pertama kali
-bum install latest
+# 4. (Opsional) Aktifkan versi Bun pertama kali
+bum use latest
 ```
 
 💡 Alternatif Native Bun (tanpa bum):
@@ -59,7 +59,7 @@ bun --version
 ## 🔹 Cheat Sheet bum
 
 ```bash
-# Lihat semua versi Bun yang sudah terinstal di bum
+# Lihat semua versi Bun yang sudah terinstal di bum (lokal)
 bum list
 
 # Melihat versi Bun yang digunakan saat ini
@@ -67,28 +67,24 @@ bum current
 # atau
 bun --version
 
-# Lihat versi Bun yang tersedia untuk diinstall
+# Lihat versi Bun yang tersedia untuk diinstall (remote)
 bum list-remote
 
-# Install Bun versi tertentu
-bum install 1.0.25
-bum install 1.1.0
-bum install 1.2.3
+# ⚠️ PENTING: Gunakan 'use' untuk install & aktifkan versi
+# Jika versi belum terinstall, bum akan otomatis download dulu
+bum use 1.2.12
+bum use 1.3.0
+bum use 1.3.9
 
 # Instal versi terbaru dari Bun (latest)
-bum install latest
+bum use latest
 
-# Gunakan Bun versi tertentu (switch session)
-# Jika versi belum terinstall, bum akan otomatis download dulu
-bum use 1.1.0
-bum use 1.2.3
-
-# Hapus versi Bun tertentu
+# Hapus versi Bun tertentu dari lokal
 bum remove 1.0.25
 
 # Auto-switch berdasarkan folder proyek (buat file .bumrc)
 echo "1.1.0" > .bumrc
-# Saat cd ke folder ini dan jalankan 'bum use' tanpa argumen,
+# Saat jalankan 'bum use' tanpa argumen di folder ini,
 # bum akan otomatis menggunakan versi dari .bumrc
 ```
 
@@ -114,7 +110,7 @@ Setelah restart terminal, setiap kali kamu masuk ke folder dengan file .bun-vers
 
 | Fitur                  | bun upgrade (Native)         | bum (Version Manager)      |
 | ---------------------- | ---------------------------- | -------------------------- |
-| Install versi spesifik | ✅ `bun upgrade --bun x.y.z` | ✅ `bum install x.y.z`     |
+| Install versi spesifik | ✅ `bun upgrade --bun x.y.z` | ✅ `bum use x.y.z`         |
 | Simpan banyak versi    | ❌ (hanya 1 aktif)           | ✅ (multi versi tersimpan) |
 | Switch instan          | ❌ (harus download ulang)    | ✅ (langsung pakai)        |
 | Auto-switch per folder | ❌                           | ✅ (via `.bumrc`)          |
