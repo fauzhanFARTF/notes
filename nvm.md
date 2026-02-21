@@ -17,21 +17,21 @@ nvm (Node Version Manager) adalah alat baris perintah (command-line tool) untuk 
 ### Di macOS, Linux, WSL
 
 ```bash
-# 1. Install 
+# 1. Install
     # via curl
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
     # Alternatif: gunakan wget
         wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 # 2. Restart terminal atau jalankan:
-    source ~/.bashrc  
-    # atau 
+    source ~/.bashrc
+    # atau
     source ~/.zshrc
     # atau
     source ~/.bash_profile
 
 # 3. Mengecek versi nvm
-    nvm --version  
+    nvm --version
 ```
 
 ## 🔹 Cheat Sheet nvm
@@ -55,11 +55,11 @@ nvm list-remote
 nvm list-remote --lts
 
 # Install node js versi tertentu
-nvm install 18.17.0    
-nvm install 20.10.0    
-nvm install 16.20.2    
-nvm install 10.8.0 
-nvm install 23.2.0 
+nvm install 18.17.0
+nvm install 20.10.0
+nvm install 16.20.2
+nvm install 10.8.0
+nvm install 23.2.0
 
 # Instal versi terbaru dari Node.js (latest)
 nvm install node

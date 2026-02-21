@@ -80,13 +80,13 @@ code /opt/homebrew/etc/nginx/nginx.
 Cari baris:
 
 ```nginx
-listen 8080;
+listen     8080;
 ```
 
 Ubah menjadi:
 
 ```nginx
-listen 80;
+listen       80;
 ```
 
 Lalu restart Nginx:
@@ -194,7 +194,6 @@ bind() to 0.0.0.0:80 failed (48: Address already in use)
 Anda punya beberapa pilihan:
 
 - Opsi A: Gunakan salah satu saja (disarankan untuk pengembangan lokal)
-
   - Jika Anda sedang pakai Apache → hentikan Nginx:
 
   - Jika beralih ke Nginx → hentikan Apache:
@@ -212,7 +211,6 @@ Anda punya beberapa pilihan:
 - Opsi B: Jalankan di port berbeda
 
   Misalnya:
-
   - Apache tetap di port 80
   - Nginx di port 8080
 
