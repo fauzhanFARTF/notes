@@ -34,7 +34,7 @@ source ~/.zshrc
 # atau
 source ~/.bash_profile
 
-# 3. Mengecek versi bunvm
+# 3. Cek versi bunvm
 bunvm --version
 
 # 4. (Opsional) Install versi Bun pertama kali
@@ -59,7 +59,7 @@ bun --version
 ## 🔹 Cheat Sheet bunvm
 
 ```bash
-# Lihat semua versi Bun yang sudah terinstal di bunvm (lokal)
+# Lihat semua versi Bun yang sudah terinstal (lokal)
 bunvm list --local
 
 # Melihat versi Bun yang digunakan saat ini
@@ -67,7 +67,7 @@ bunvm current
 # atau
 bun --version
 
-# Lihat versi Bun yang tersedia untuk diinstall (remote)
+# Lihat versi Bun yang tersedia untuk diinstal (remote)
 bunvm list
 
 # Install Bun versi tertentu
@@ -75,14 +75,14 @@ bunvm install 1.0.25
 bunvm install 1.1.0
 bunvm install 1.2.3
 
-# Instal versi terbaru dari Bun (latest)
+# Instal versi terbaru
 bunvm install latest
 
-# Gunakan Bun versi tertentu (switch session - persisten)
+# Gunakan Bun versi tertentu (switch persisten)
 bunvm use 1.1.0
 bunvm use 1.2.3
 
-# Buat alias versi (misal: 'stable' untuk 1.1.0)
+# Buat alias versi
 bunvm alias stable 1.1.0
 bunvm alias beta 1.2.0
 
@@ -95,9 +95,8 @@ bunvm uninstall 1.0.25
 # Update bunvm ke versi terbaru
 bunvm selfupdate
 
-# Auto-switch berdasarkan folder proyek (buat file .bun-version)
+# Auto-switch berdasarkan folder proyek
 echo "1.1.0" > .bun-version
-# Saat cd ke folder ini, bunvm otomatis switch ke 1.1.0! 🎉
 ```
 
 ### 🔹 Bonus: Integrasi dengan Shell Hook (Auto-Switch)
@@ -106,9 +105,8 @@ bunvm sudah mendukung auto-switching otomatis saat kamu cd ke folder proyek yang
 
 ```bash
 # Untuk ~/.zshrc atau ~/.bashrc (jika belum otomatis)
-if command -v bunvm &> /dev/null; then
-  eval "$(bunvm init)"
-fi
+export BUNVM_DIR="$HOME/.bunvm"
+[ -s "$BUNVM_DIR/bunvm.sh" ] && source "$BUNVM_DIR/bunvm.sh"
 ```
 
 Setelah restart terminal, setiap kali kamu masuk ke folder dengan file .bun-version, bunvm akan otomatis:

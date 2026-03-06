@@ -94,10 +94,11 @@ Agar bum bisa otomatis switch versi saat kamu cd ke folder proyek yang memiliki 
 
 ```bash
 # Untuk ~/.zshrc atau ~/.bashrc
-if command -v bum &> /dev/null; then
-  # Inisialisasi bum untuk auto-detect .bumrc
-  eval "$(bum init)"
-fi
+echo '' >> ~/.zshrc
+echo '# bum hook' >> ~/.zshrc
+echo 'if command -v bum >/dev/null 2>&1; then' >> ~/.zshrc
+echo '  eval "$(bum init)"' >> ~/.zshrc
+echo 'fi' >> ~/.zshrc
 ```
 
 Setelah restart terminal, setiap kali kamu masuk ke folder dengan file .bun-version, bum akan otomatis:
