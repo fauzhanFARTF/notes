@@ -12,9 +12,14 @@ Karena Anda pengguna macOS + Homebrew, berikut adalah pendekatan terbaik untuk m
 
 ### 🔹 Langkah 1: Install Beberapa Versi PostgreSQL via Homebrew
 
-Homebrew tidak menautkan (link) versi lama secara default untuk menghindari konflik. Jadi semua versi tetap terinstal tapi tidak aktif di $PATH.
-bash
-123
+Homebrew tidak menautkan (link) versi lama secara default untuk menghindari konflik. Jadi semua versi tetap terinstal tapi tidak aktif
+
+```bash
+# Contoh: Install versi 14 dan 15
+brew install postgresql@14
+brew install postgresql@15
+brew install postgresql@16
+```
 
 ### 🔹 Langkah 2: Buat Skrip spg (Switch PostgreSQL)
 
@@ -22,13 +27,13 @@ bash
    Pastikan folder bin lokal ada:
 
    ```bash
-       mkdir -p ~/.local/bin
+   mkdir -p ~/.local/bin
    ```
 
 2. Buat file ~/.local/bin/spg:
 
    ```bash
-       nano ~/.local/bin/spg
+   nano ~/.local/bin/spg
    ```
 
 3. Isi dengan skrip berikut:
