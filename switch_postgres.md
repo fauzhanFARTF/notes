@@ -39,49 +39,131 @@ brew install postgresql@16
 3. Isi dengan skrip berikut:
 
    ```bash
-    #!/bin/zsh
-
+   #!/bin/zsh
 
    if [ -z "$1" ]; then
    echo "Usage: spg <version>"
-   echo "Example: spg 15"
+   echo "Example: spg 14"
    echo "Available versions: 14, 15, 16..."
    return 1
    fi
 
    VERSION=$1
-    FORMULA="postgresql@$VERSION"
+   FORMULA="postgresql@$VERSION"
+   DATA_DIR="/opt/homebrew/var/postgresql@$VERSION"
+   LOG_FILE="/opt/homebrew/var/log/postgresql@$VERSION.log"
+   PID_FILE="/opt/homebrew/var/postgresql@$VERSION/postmaster.pid"
 
-   # Stop semua service postgresql yang berjalan
+   # Cek apakah versi terinstal
 
-   brew services stop postgresql
-   brew services stop $FORMULA
+   if ! brew list | grep -q $FORMULA; then
+   echo "❌ PostgreSQL $VERSION not installed!"
+   echo "Install with: brew install $FORMULA"
+   return 1
+   fi
 
-   # Unlink versi sebelumnya
+   echo "🛑 Force stopping ALL PostgreSQL services..."
 
+   # Stop semua service postgres via brew
+
+   for pg_ver in 14 15 16 17 18; do
+   brew services stop postgresql@$pg_ver 2>/dev/null
+   done
+   brew services stop postgresql 2>/dev/null
+
+   # Tunggu proses stop
+
+   sleep 3
+
+   # Force kill jika masih ada proses postgres
+
+   echo "🔍 Checking for lingering postgres processes..."
+   PG_PIDS=$(pgrep -f "postgres" 2>/dev/null)
+   if [ ! -z "$PG_PIDS" ]; then
+   echo "⚠️ Found lingering processes, force killing..."
+   pkill -9 -f "postgres" 2>/dev/null
+   sleep 2
+   fi
+
+   # Pastikan port 5432 bebas
+
+   echo "🔍 Checking port 5432..."
+   if lsof -i :5432 >/dev/null 2>&1; then
+   echo "⚠️ Port 5432 still in use! Killing process..."
+   lsof -ti :5432 | xargs kill -9 2>/dev/null
+   sleep 2
+   fi
+
+   # Unlink semua versi
+
+   echo "🔗 Unlinking all PostgreSQL versions..."
+   for pg_ver in 14 15 16 17 18; do
+   brew unlink postgresql@$pg_ver 2>/dev/null
+   done
    brew unlink postgresql 2>/dev/null
 
    # Link versi yang dipilih
 
-   echo "Switching to PostgreSQL $VERSION..."
+   echo "🔗 Linking PostgreSQL $VERSION..."
    brew link $FORMULA --force
 
-   # Start service versi yang dipilih
+   # Cek & init data directory jika belum ada
 
+   if [ ! -d "$DATA_DIR" ] || [ ! -f "$DATA_DIR/PG_VERSION" ]; then
+   echo "📁 Initializing data directory..."
+   mkdir -p $DATA_DIR
+   initdb $DATA_DIR
+   fi
+
+   # Fix permission
+
+   chown -R $(whoami) $DATA_DIR 2>/dev/null
+
+   # Start service
+
+   echo "🚀 Starting PostgreSQL $VERSION..."
    brew services start $FORMULA
 
-   echo "✅ Successfully switched to PostgreSQL $VERSION"
-   psql --version
+   # Wait for service to start
 
+   sleep 5
+
+   # Verify
+
+   echo "🔍 Verifying..."
+   if brew services list | grep -q "$FORMULA.\*started"; then
+   echo ""
+   echo "✅ Successfully switched to PostgreSQL $VERSION"
+   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+   psql --version
+   psql -c "SELECT version();" 2>/dev/null
+   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+   else
+   echo ""
+   echo "❌ Failed to start PostgreSQL $VERSION"
+   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+   echo "Debug info:"
+   brew services info $FORMULA
+   echo ""
+   echo "Check logs: tail -n 50 $LOG_FILE"
+   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+   return 1
+   fi
    ```
 
 4. Beri izin eksekusi:
 
    ```bash
-       chmod +x ~/.local/bin/spg
+      chmod +x ~/.local/bin/spg
    ```
 
    (Pastikan ~/.local/bin sudah ada di $PATH Anda)
+   - Cara menambahkan ke path
+
+   ```bash
+   echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
 
 ### 🔹 Langkah 3: Inisialisasi Data Directory
 
